@@ -9,6 +9,17 @@
     </div>
 </div>
 
+<div class="row g-3 align-items-center mt-3 mb-3">
+<div class="col-auto">
+    <label for="inputPassword6" class="col-form-label">Search Bar</label>
+  </div>
+
+  <div class="col-auto">
+    <form action="/matakuliah" method="GET">
+    <input type="search" name="search" class="form-control">
+    </form>
+  </div>
+</div>
 
 <table class="table">
     <tr>
@@ -26,14 +37,18 @@
         <td>{{ $data->sks }}</td>
         <td>{{ $data->tipe }}</td>
         <td>{{ $data->semester }}</td>
-        <td><a href="{{ route('matakuliah.edit', $data->id) }}" class="btn btn-primary">Edit</a>
-            <form action=" {{ route('matakuliah.delete', $data->id) }}" method="post">
+        <td class="flex-auto">
+        <div style="display: flex; gap: 20px;">
+            <a href="{{ route('matakuliah.edit', $data->id) }}" class="btn btn-primary mb-3" style="width: 100px;">Edit</a>
+            <form action="{{ route('matakuliah.delete', $data->id) }}" method="post">
                 @csrf
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" style="width: 100px;">Delete</button>
             </form>
-        </td>
+        </div>
+</td>
     </tr>
     @endforeach
 </table>
+{{ $matakuliah->links() }}
 
 @endsection
