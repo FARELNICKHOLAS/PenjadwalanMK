@@ -20,6 +20,6 @@ class Pengampu extends Model
     }
 
     public function Matakuliah(){
-        return $this->belongsTo(matakuliah::class, 'id_matkul');
+        return $this->belongsTo(matakuliah::class, 'kode_matkul');
     }
 }
