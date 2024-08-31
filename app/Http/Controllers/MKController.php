@@ -11,7 +11,7 @@ class MKController extends Controller
 {
     function tampil(Request $request) {
         if($request->has('search')){
-            $matakuliah = Matakuliah::where('nama_matkul', 'LIKE', '%' .$request->search. '%')->orWhere('kode_matkul', 'LIKE', '%' . $request->search . '%')->get();
+            $matakuliah = Matakuliah::where('nama_matkul', 'LIKE', '%' .$request->search. '%')->orWhere('kode_matkul', 'LIKE', '%' . $request->search . '%')->paginate(5);
         } else {
             $matakuliah = Matakuliah::paginate(5);
         }
