@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pengampu', function (Blueprint $table) {
             $table->id();
-            $table->string('id_dosen')->unsigned()->nullable();
-            $table->string('kode_matkul')->unsigned()->nullable();
+            $table->unsignedBigInteger('id_dosen');
+            $table->string('kode_matkul')->nullable();
             $table->string('ruang_kelas');
 
             $table->foreign('kode_matkul')->references('kode_matkul')->on('matakuliah')->OnUpdate('CASCADE')->OnDelete('CASCADE');

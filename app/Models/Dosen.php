@@ -2,12 +2,18 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pengampu;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Dosen extends Model
 {
     use HasFactory;
     protected $table = 'dosen';
     protected $fillable = ['nip', 'nama'];
+
+    public function Pengampu():HasMany{
+        return $this->hasMany(Pengampu::class, 'id_dosen');
+    }
 }
