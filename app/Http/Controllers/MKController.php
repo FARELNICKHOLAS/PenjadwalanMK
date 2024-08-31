@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Matakuliah;
 use Illuminate\Http\Request;
 
+use function Laravel\Prompts\search;
+
 class MKController extends Controller
 {
-    function tampil() {
-        $matakuliah = Matakuliah::get();
+    function tampil(Request $request) {
+        if($request->has('search')){
+            $matakuliah = Matakuliah::where('nama_matkul', 'LIKE', '%' .$request->search. '%')->orWhere('kode_matkul', 'LIKE', '%' . $request->search . '%')->get();
+        } else {
+            $matakuliah = Matakuliah::paginate(5);
+        }
         return view('matakuliah.tampil', compact('matakuliah'));
     }
+    
 
     function tambah(){
         return view('matakuliah.tambah');
