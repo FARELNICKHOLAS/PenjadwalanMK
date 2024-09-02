@@ -19,14 +19,15 @@
     @foreach($jam as $no=>$data)
     <tr>
         <td>{{$data->sesi}}</td>
-        <td><a href="{{ route('jam.edit', $data->id) }}" class="btn btn-primary">Edit</a>
-            <form action=" {{ route('jam.delete', $data->id) }}" method="post">
+        <td class="flex-auto">
+        <div style="display: flex; gap: 20px;">
+            <a href="{{ route('jam.edit', $data->id) }}" class="btn btn-primary mb-3" style="width: 100px;">Edit</a>
+            <form action="{{ route('jam.delete', $data->id) }}" method="post">
                 @csrf
-                <button class="btn btn-danger">Delete</button>
+                <button class="btn btn-danger" style="width: 100px;">Delete</button>
             </form>
-        </td>
-        
-    </tr>
+        </div>
+</td>
     @endforeach   
 </table>
 
