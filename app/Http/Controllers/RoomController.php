@@ -20,13 +20,13 @@ class RoomController extends Controller
             $ruangan = $ruangan->where('nama_ruangan', 'LIKE', '%' . $request->searchname . '%');
         }
 
-        $ruangan = $ruangan->paginate(4);
+        $ruangan = $ruangan->paginate(5);
 
-        return view('ruangan.index', compact('ruangan')); //ganti dengan yang seharusnya
+        return view('ruangan.tampil', compact('ruangan')); //ganti dengan yang seharusnya
     }
 
-    public function buat(Request $request){
-        return view('halam.untuk.tambah.ruangan'); //ganti dengan yang benar
+    public function create(Request $request){
+        return view('ruangan.tambah'); //ganti dengan yang benar
     }
 
     public function store(Request $request){
@@ -42,7 +42,7 @@ class RoomController extends Controller
 
         $ruangan = Ruangan::create($params);
 
-        return redirect()->route('ruangan.buat'); //ganti dengan yang seharusnya
+        return redirect()->route('ruangan.tampil'); //ganti dengan yang seharusnya
     }
 
     public function edit($id){
@@ -57,7 +57,7 @@ class RoomController extends Controller
 
     public function update(Request $request, $id){
         $request->validate([
-            'kode_ruangan' => 'unique:ruangan,kode_ruangan' . $id . '|required',
+            'kode_ruangan' => 'unique:ruangan,kode_ruangan|required',
             'namaruangan' => 'required',
         ]);
 
@@ -66,12 +66,12 @@ class RoomController extends Controller
         $ruangan->nama_ruangan = $request->input('namaruangan');
         $ruangan->save();
 
-        return redirect()->route('ruangan.update'); //ganti dengan yang seharusnya
+        return redirect()->route('ruangan.tampil'); //ganti dengan yang seharusnya
     }
 
     public function delete($id){
         Ruangan::find($id)->delete();
 
-        return redirect()->route('ruangan.delete')->with('success', 'Ruangan Berhasil dihapus!'); //ganti dengan rute yang seharusnya
+        return redirect()->route('ruangan.tampil')->with('success', 'Ruangan Berhasil dihapus!'); //ganti dengan rute yang seharusnya
     }
 }

@@ -37,14 +37,8 @@
       <div class="flex-grow-1">
         <select class="form-select">
           <option selected>Pilih semester...</option>
-          <option>Semester 1</option>
-          <option>Semester 2</option>
-          <option>Semester 3</option>
-          <option>Semester 4</option>
-          <option>Semester 5</option>
-          <option>Semester 6</option>
-          <option>Semester 7</option>
-          <option>Semester 8</option>
+          <option>Ganjil</option>
+          <option>Genap</option>
         </select>
       </div>
     </div>

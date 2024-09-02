@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('kode');
             $table->string('nama');
             $table->timestamps();
+
         });
     }
 

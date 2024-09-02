@@ -35,12 +35,34 @@
                 <div class="card-body p-4" style="border: 1px dashed #cccccc;">
                     <div class="d-flex align-items-center">
                         <!-- Upload Button Section -->
-                        <div class="flex-shrink-0">
-                            <button class="btn btn-primary" style="background-color: #A259FF; border-color: #A259FF;">
-                                Upload data from your file
-                            </button>
-                            <p class="text-muted mt-2 mb-0"><small>Your file must be in .csv format</small></p>
-                        </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #A259FF; border-color: #A259FF; width: 250px; height: 60px;">
+    Upload data from your file
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Upload your data</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="/importexcel" method="POST" enctype="multipart/form-data">
+            @csrf
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="file" name="pengampufile" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" style="background-color: #A259FF; border-color: #A259FF;">Save changes</button>
+        </div>
+        </div>
+        </form>
+    </div>
+    </div>
  
                         <!-- Divider -->
                         <div class="mx-5" style="border-left: 2px solid #dddddd; height: 100px;"></div>
@@ -61,12 +83,16 @@
 <div><p class="description mt-3" >
   Anda juga dapat secara manual menyesuaikan data Dosen dan Matakuliah yang diampu!
 </p></div>
-   <!-- dragdrop ends -->
-   <div >
+   <div class="d-flex">
     <h1 class="fs-5" style="margin-left:25px; margin-top:75px;">Dosen Pengampu Matakuliah:</a></h1>
     <hr class= "my-3">
     </div>
-
+    <div class="col d-flex justify-content-end align-items-center mt-3">
+        <form action="{{ route('deletedata') }}" method="POST">
+            @csrf
+            <button class="btn btn-danger ms-2" style="width:200px; margin-right:75px;">Hapus Semua Data</button>
+        </form>
+      </div>
   <!-- table starts -->
 
 <div class="container mb-4 mt-5">
@@ -77,66 +103,27 @@
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col" class="kode-matakuliah">Matakuliah</th>
-                        <th scope="col" class="jumlah-dosen">Jumlah Dosen Pengampu</th>
-                        <th scope="col">Edit</th>
+                        <th scope="col" class="jumlah-dosen">Dosen Pengampu</th>
+                        <th scope="col" class="Kelas-ygDiajar">Kelas yang Diajar</th>
+                        {{-- <th scope="col">Edit</th> --}}
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ( $pengajar as $no=>$data)
                     <tr>
-                        <td>1</td>
-                        <td>Pengantar Kecerdasan Buatan</td>
-                        <td class="jumlah-dosen">Dua dosen pengampu</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </td>
+                    <td>{{ $data->kode_ajaran }}</td>
+                    <td>{{ $data->matkul->nama_matkul }}</td>
+                    <td class="jumlah-dosen">{{ $data->dosen->nama }}</td>
+                    <td>{{ $data->namakelas->nama }}</td>
                     </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Pengantar Kecerdasan Buatan</td>
-                        <td class="jumlah-dosen">Dua dosen pengampu</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Pengantar Kecerdasan Buatan</td>
-                        <td class="jumlah-dosen">Dua dosen pengampu</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Pengantar Kecerdasan Buatan</td>
-                        <td class="jumlah-dosen">Dua dosen pengampu</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>Pengantar Kecerdasan Buatan</td>
-                        <td class="jumlah-dosen">Dua dosen pengampu</td>
-                        <td>
-                            <button class="btn btn-primary">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                        </td>
-                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>
     </div>
 </div>
    <!-- table ends -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

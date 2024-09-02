@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('pengampu', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_dosen');
-            $table->string('kode_matkul')->nullable();
-            $table->string('ruang_kelas');
+            $table->unsignedBigInteger('id_pengajar');
+            $table->unsignedBigInteger('ruang_kelas');
+            $table->timestamps();
 
-            $table->foreign('kode_matkul')->references('kode_matkul')->on('matakuliah')->OnUpdate('CASCADE')->OnDelete('CASCADE');
-            $table->foreign('id_dosen')->references('id')->on('dosen')->OnUpdate('CASCADE')->OnDelete('CASCADE');
+            $table->foreign('ruang_kelas')->references('id')->on('ruangan')->OnUpdate('CASCADE')->OnDelete('CASCADE');
+            $table->foreign('id_pengajar')->references('id')->on('pengajar')->OnUpdate('CASCADE')->OnDelete('CASCADE');
         });
     }
 

@@ -5,21 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-use App\Models\Dosen;
-use App\Models\matakuliah;
+use App\Models\Pengajar;
 
 class Pengampu extends Model
 {
     use HasFactory;
 
     protected $table = 'pengampu';
-    protected $fillable = []; //isi fillabel
+    protected $fillable = ['id_pengajar', 'ruang_kelas'];
 
-    public function Dosen(){
-        return $this->belongsTo(Dosen::class, 'id_dosen');
+    public function pengajar(){
+        return $this->belongsTo(Pengajar::class, 'id_pengajar');
     }
 
-    public function Matakuliah(){
-        return $this->belongsTo(matakuliah::class, 'kode_matkul');
+    public function ruangan(){
+        return $this->belongsTo(Ruangan::class, 'ruang_kelas');
     }
 }

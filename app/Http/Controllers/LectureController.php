@@ -20,11 +20,11 @@ class LectureController extends Controller
 
         $dosen = $dosen->paginate(10);
 
-        return view('path.dimana.akan.ditampilkan', compact('dosen')); //perbaiki dengan mengisi path yang benar
+        return view('dosen.tampil', compact('dosen')); //perbaiki dengan mengisi path yang benar
     }
 
-    public function buat(Request $request){
-        return view('path.ke.halaman.tambah.dosen');
+    public function create(Request $request){
+        return view('dosen.tambah');
     }
 
     public function store(Request $request){
@@ -38,9 +38,9 @@ class LectureController extends Controller
             'nama' => $request->input('namadosen'),
         ];
 
-        $dosen = Dosen::buat($params);
+        $dosen = Dosen::create($params);
 
-        return redirect()->route('dosen.tambah'); //ganti dengan yang seharusnya
+        return redirect()->route('dosen.tampil'); //ganti dengan yang seharusnya
     }
 
     public function edit($id){
@@ -64,12 +64,12 @@ class LectureController extends Controller
         $dosen->nama =  $request->input('namadosen');
         $dosen->save();
 
-        return redirect()->route('dosen.update'); //ganti dengan yang seharusnya
+        return redirect()->route('dosen.tampil'); //ganti dengan yang seharusnya
     }
 
-    public function destroy($id){
+    public function delete($id){
         Dosen::find($id)->delete();
 
-        return redirect()->route('dosen.hapus')->with('success', 'Data Dosen Telah berhasil dihapus!');
+        return redirect()->route('dosen.tampil')->with('success', 'Data Dosen Telah berhasil dihapus!');
     }
 }
