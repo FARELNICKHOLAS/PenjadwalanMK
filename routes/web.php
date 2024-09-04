@@ -1,17 +1,17 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MKController;
 use App\Http\Controllers\DayController;
 use App\Http\Controllers\JamController;
 use App\Http\Controllers\KelasController;
-use App\Http\Controllers\MKController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LectureController;
+use App\Http\Controllers\PengajarController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\TeachController;
 
 Route::get('/', function () {
     return view('home');
-});
-
-Route::get('/kurikulum', function () {
-    return view('kurikulum');
 });
 
 // hari
@@ -67,5 +67,52 @@ Route::post('/kelas/update/{id}', [KelasController::class, 'update'])->name('kel
 
 Route::post('/kelas/delete/{id}', [KelasController::class, 'delete'])->name('kelas.delete');
 
-// import
-Route::post('/importexcel', [KelasController::class, 'importexcel'])->name('kelas.delete');
+// Dosen
+
+Route::get('/dosen', [LectureController::class, 'index'])->name('dosen.tampil');
+
+Route::get('/dosen/tambah', [LectureController::class, 'create'])->name('dosen.tambah');
+
+Route::post('/dosen/submit', [LectureController::class, 'store'])->name('dosen.submit');
+
+Route::get('/dosen/edit/{id}', [LectureController::class, 'edit'])->name('dosen.edit');
+
+Route::post('/dosen/update/{id}', [LectureController::class, 'update'])->name('dosen.update');
+
+Route::post('/dosen/delete/{id}', [LectureController::class, 'delete'])->name('dosen.delete');
+
+// Ruangan
+
+Route::get('/ruangan', [RoomController::class, 'index'])->name('ruangan.tampil');
+
+Route::get('/ruangan/tambah', [RoomController::class, 'create'])->name('ruangan.tambah');
+
+Route::post('/ruangan/submit', [RoomController::class, 'store'])->name('ruangan.submit');
+
+Route::get('/ruangan/edit/{id}', [RoomController::class, 'edit'])->name('ruangan.edit');
+
+Route::post('/ruangan/update/{id}', [RoomController::class, 'update'])->name('ruangan.update');
+
+Route::post('/ruangan/delete/{id}', [RoomController::class, 'delete'])->name('ruangan.delete');
+
+// Pengampu
+
+Route::get('/pengampu', [TeachController::class, 'index'])->name('pengampu.tampil');
+
+Route::get('/pengampu/tambah', [TeachController::class, 'create'])->name('pengampu.tambah');
+
+Route::post('/pengampu/submit', [TeachController::class, 'store'])->name('pengampu.submit');
+
+Route::get('/pengampu/edit/{id}', [TeachController::class, 'edit'])->name('pengampu.edit');
+
+Route::post('/pengampu/update/{id}', [TeachController::class, 'update'])->name('pengampu.update');
+
+Route::post('/pengampu/delete/{id}', [TeachController::class, 'delete'])->name('pengampu.delete');
+
+// Pengajar
+
+Route::get('/kurikulum', [PengajarController::class, 'tampil'])->name('kurikulum');
+
+Route::post('/importexcel', [PengajarController::class, 'importexcel'])->name('importexcel');
+
+Route::post('/deletedata', [PengajarController::class, 'delete'])->name('deletedata');

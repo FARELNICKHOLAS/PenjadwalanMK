@@ -17,3 +17,4 @@
         @yield('konten')
     </div>
 </body>
+</html>

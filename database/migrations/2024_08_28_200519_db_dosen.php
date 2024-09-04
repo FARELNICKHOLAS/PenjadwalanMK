@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hari', function (Blueprint $table) {
-            $table->id('kode');
+        Schema::create('dosen', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('nip');
             $table->string('nama');
             $table->timestamps();
-
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hari');
+        Schema::dropIfExists('dosen');
     }
 };
