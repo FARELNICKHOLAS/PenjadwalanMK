@@ -66,3 +66,6 @@ Route::get('/kelas/edit/{id}', [KelasController::class, 'edit'])->name('kelas.ed
 Route::post('/kelas/update/{id}', [KelasController::class, 'update'])->name('kelas.update');
 
 Route::post('/kelas/delete/{id}', [KelasController::class, 'delete'])->name('kelas.delete');
+
+// import
+Route::post('/importexcel', [KelasController::class, 'importexcel'])->name('kelas.delete');

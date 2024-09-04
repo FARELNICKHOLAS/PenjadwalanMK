@@ -7,16 +7,42 @@
     <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.css')}}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- Navbar Starts -->
-    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #465866;">
-  <div class="container-fluid">
-  <img class="logo" src="img/logo.png" alt="logo"> 
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top" style="background-color: #465866;">
+        <div class="container-fluid">
+            <img src="img/logo.png" alt="logo" width="150" height="40">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse"></div>
+            <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 navbar-text" style="margin-left: 130px;">
+                <li class="nav-item">
+                        <a class="nav-link fs-5" href="/" style="color: #FFFFFF; ">Penjadwalan</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active fs-5" aria-current="page" href="/dosen" style="color: #FFFFFF;">Dosen</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/matakuliah" style="color: #FFFFFF;">Matakuliah</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/pengampu" style="color: #FFFFFF;">Pengampu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/kurikulum" style="color: #FFFFFF;">Kurikulum</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="collapse navbar-collapse"></div>
+        </div>
     </nav>
     <!-- Navbar Ends -->
+     
     <div >
     <h1 class="title-custom mt-3">Kurikulum <a>Dosen Pengampu Matakuliah</a></h1>
     </div>
@@ -35,12 +61,34 @@
                 <div class="card-body p-4" style="border: 1px dashed #cccccc;">
                     <div class="d-flex align-items-center">
                         <!-- Upload Button Section -->
-                        <div class="flex-shrink-0">
-                            <button class="btn btn-primary" style="background-color: #A259FF; border-color: #A259FF;">
-                                Upload data from your file
-                            </button>
-                            <p class="text-muted mt-2 mb-0"><small>Your file must be in .csv format</small></p>
-                        </div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="background-color: #A259FF; border-color: #A259FF; width: 250px; height: 60px;">
+    Upload data from your file
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Upload your data</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form action="#" method="POST" enctype="multipart/form-data">
+            @csrf
+        <div class="modal-body">
+            <div class="form-group">
+                <input type="file" name="pengampufile" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" style="background-color: #A259FF; border-color: #A259FF;">Save changes</button>
+        </div>
+        </div>
+        </form>
+    </div>
+    </div>
  
                         <!-- Divider -->
                         <div class="mx-5" style="border-left: 2px solid #dddddd; height: 100px;"></div>
@@ -138,5 +186,10 @@
     </div>
 </div>
    <!-- table ends -->
+
+   <!-- Include Popper.js and Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+
 </body>
 </html>

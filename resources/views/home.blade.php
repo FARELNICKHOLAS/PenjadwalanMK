@@ -13,7 +13,7 @@
 </head>
 <body> 
 <!-- {{-- navbar starts --}} -->
-    <nav class="navbar navbar-expand-lg custom-navbar" style="background-color: #465866;">
+    <nav class="navbar navbar-expand-lg custom-navbar sticky-top" style="background-color: #465866;">
         <div class="container-fluid">
             <img src="img/logo.png" alt="logo" width="150" height="40">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -22,6 +22,9 @@
             <div class="collapse navbar-collapse"></div>
             <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                 <ul class="navbar-nav mb-2 mb-lg-0 navbar-text" style="margin-left: 130px;">
+                <li class="nav-item">
+                        <a class="nav-link fs-5" href="/" style="color: #FFFFFF;">Penjadwalan</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link active fs-5" aria-current="page" href="/dosen" style="color: #FFFFFF;">Dosen</a>
                     </li>
@@ -30,6 +33,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link fs-5" href="/pengampu" style="color: #FFFFFF;">Pengampu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/kurikulum" style="color: #FFFFFF;">Kurikulum</a>
                     </li>
                 </ul>
             </div>
