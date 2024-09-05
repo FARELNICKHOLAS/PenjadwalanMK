@@ -23,6 +23,7 @@
 
 <table class="table">
     <tr>
+        <th>No</th>
         <th>Kode</th>
         <th>Nama</th>
         <th>SKS</th>
@@ -32,6 +33,7 @@
     </tr>
     @foreach($matakuliah as $no=>$data)
     <tr>
+        <td>{{ $data->id }}</td>
         <td>{{ $data->kode_matkul }}</td>
         <td>{{ $data->nama_matkul }}</td>
         <td>{{ $data->sks }}</td>
