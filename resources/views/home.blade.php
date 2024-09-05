@@ -32,9 +32,6 @@
                         <a class="nav-link fs-5" href="/matakuliah" style="color: #FFFFFF;">Matakuliah</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link fs-5" href="/pengampu" style="color: #FFFFFF;">Pengampu</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link fs-5" href="/kurikulum" style="color: #FFFFFF;">Kurikulum</a>
                     </li>
                 </ul>

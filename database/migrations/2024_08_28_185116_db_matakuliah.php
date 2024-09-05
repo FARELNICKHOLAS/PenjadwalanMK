@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('nama_matkul');
             $table->integer('sks');
             $table->integer('semester');
+            $table->string('jenis_semester');
             $table->string('tipe');
             $table->timestamps();
         });

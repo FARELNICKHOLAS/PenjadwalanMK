@@ -42,6 +42,7 @@ class MKController extends Controller
 
     function update(Request $request, $id){
         $matakuliah = Matakuliah::find($id);
+        $matakuliah->$id;
         $matakuliah->kode_matkul = $request->kode;
         $matakuliah->nama_matkul = $request->nama;
         $matakuliah->sks = $request->sks;

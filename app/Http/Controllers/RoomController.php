@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class RoomController extends Controller
 {
     function index(Request $request){
-        $ruangan = Ruangan::orderBy('id', 'desc');
+        $ruangan = Ruangan::orderBy('id', 'asc');
 
         if (!empty($request->searchcode))
         {

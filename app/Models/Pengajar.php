@@ -18,7 +18,7 @@ class Pengajar extends Model
     protected $fillable = ['kode_ajaran', 'id_dosen', 'kode_matkul', 'id_namakelas'];
 
     public function dosen(){
-        return $this->belongsTo(Dosen::class, 'id_dosen');
+        return $this->belongsTo(Dosen::class, 'id');
     }
 
     public function matkul(){
