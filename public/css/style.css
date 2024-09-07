@@ -42,3 +42,7 @@
     width: 350px; 
     white-space: nowrap; 
 }
+
+.navbar-nav .nav-link {
+    font-weight: 300; /* Ensure this matches the weight used on other pages */
+}
