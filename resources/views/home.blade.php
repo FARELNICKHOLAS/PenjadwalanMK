@@ -64,7 +64,9 @@
     </div>
     <div class="col d-flex justify-content-end align-items-center mt-3">
       <div class="d-flex gap-2">
-        <button class="btn btn-primary" style="width: 120px;">Generate</button>
+        <form action="{{ route('kurikulum.generate') }}">
+            <button class="btn btn-primary" style="width: 120px;">Generate</button>
+        </form>
         <button class="btn btn-danger" style="width: 120px;">Delete</button>
         <button class="btn btn-success" style="width: 120px;">Print</button>
       </div>
@@ -81,8 +83,8 @@
                 <table class="table table-bordered">
                     <thead class="table-primary">
                         <tr>
-                            <th scope="col"><input type="checkbox"></th>
-                            <th scope="col">Program Studi</th>
+                            <th scope="col">No.</th>
+                            {{-- <th scope="col">Program Studi</th> --}}
                             <th scope="col">Kode Matakuliah</th>
                             <th scope="col">Matakuliah</th>
                             <th scope="col">SKS</th>
@@ -95,112 +97,29 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if ($jadwal != null)       
+                        @foreach ( $jadwal as $no=>$data )
                         <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
+                            <td>{{ $data->id }}</td>
+                            {{-- <td>{{ $data-> }}</td> --}}
+                            {{-- {{ dd($data); }} --}}
+                            <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
+                            <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
+                            <td>{{ $data->pengajar->matkul->sks }}</td>
+                            <td>{{ $data->pengajar->matkul->semester }}</td>
+                            <td>{{ $data->pengajar->dosen->nama }}</td>
+                            <td>{{ $data->pengajar->namakelas->nama }}</td>
+                            <td>{{ $data->hari->nama }}</td>
+                            <td>{{ $data->jam->sesi }}</td>
+                            <td>{{ $data->ruangan->nama_ruangan }}</td>
                         </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
-                        <tr>
-                            <td><input type="checkbox"></td>
-                            <td>Informatika</td>
-                            <td>IF22403002</td>
-                            <td>Analisis dan Desain Sistem</td>
-                            <td>3</td>
-                            <td>4</td>
-                            <td>Dr. Anak Agung Istri Ngurah Eka Karyawati</td>
-                            <td>F</td>
-                            <td>Rabu</td>
-                            <td>10.30 - 13.00</td>
-                            <td>2.2</td>
-                        </tr>
+                        @endforeach
+                        @endif
                     </tbody>
                 </table>
+                {{-- <pre>
+                    {{ print_r($data_yangKonflik, true) }}
+                    </pre> --}}
             </div>
         </div>
     </div>

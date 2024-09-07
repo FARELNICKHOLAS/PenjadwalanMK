@@ -70,7 +70,9 @@ class PengajarController extends Controller
 
     function delete(){
         DB::statement('ALTER TABLE pengampu DROP FOREIGN KEY pengampu_id_pengajar_foreign;');
+        DB::statement('ALTER TABLE jadwal DROP FOREIGN KEY jadwal_id_pengajar_foreign;');
         Pengajar::truncate();
+        DB::statement('ALTER TABLE jadwal ADD CONSTRAINT jadwal_id_pengajar_foreign FOREIGN KEY (id_pengajar) REFERENCES pengajar(id);');
         DB::statement('ALTER TABLE pengampu ADD CONSTRAINT pengampu_id_pengajar_foreign FOREIGN KEY (id_pengajar) REFERENCES pengajar(id);');
         return redirect()->back();
     }

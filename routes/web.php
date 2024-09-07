@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MKController;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\GenetikaController;
 use App\Http\Controllers\JamController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\LectureController;
@@ -10,9 +11,7 @@ use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeachController;
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/', [GenetikaController::class, 'tampil'])->name('kurikulum.tampil');
 
 // hari
 Route::get('/hari', [DayController::class, 'tampil'])->name('hari.tampil');
@@ -116,3 +115,7 @@ Route::get('/kurikulum', [PengajarController::class, 'tampil'])->name('kurikulum
 Route::post('/importexcel', [PengajarController::class, 'importexcel'])->name('importexcel');
 
 Route::post('/deletedata', [PengajarController::class, 'delete'])->name('deletedata');
+
+Route::get('/kurikulum/generate', [GenetikaController::class, 'submit'])->name('kurikulum.generate');
+
+Route::get('/kurikulum/generate/result/{$id}', [GenetikaController::class, 'result'])->name('kurikulum.result');
