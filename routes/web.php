@@ -119,3 +119,7 @@ Route::post('/deletedata', [PengajarController::class, 'delete'])->name('deleted
 Route::get('/kurikulum/generate', [GenetikaController::class, 'submit'])->name('kurikulum.generate');
 
 Route::get('/kurikulum/generate/result/{$id}', [GenetikaController::class, 'result'])->name('kurikulum.result');
+
+Route::get('/coba', [GenetikaController::class, 'tampil'])->name('coba.tampil');
+
+Route::get('/coba/generate', [GenetikaController::class, 'submit'])->name('coba.generate');

@@ -10,7 +10,8 @@ use App\Models\Setting;
 use App\Models\Pengajar;
 use App\Models\matakuliah;
 use Illuminate\Http\Request;
-use App\Algorithm\GenerateGA;
+// use App\Algorithm\GenerateGA;
+use App\Algorithm\AlgoritmaGenetik2;
 
 class GenetikaController extends Controller
 {
@@ -21,8 +22,8 @@ class GenetikaController extends Controller
         $ruangan = Ruangan::get();
         $pengajar = Pengajar::get();
 
-        $generate = new GenerateGA;
-        $data_yangKonflik = $generate->cekJadwalKonflik();
+        // $generate = new GenerateGA;
+        // $data_yangKonflik = $generate->cekJadwalKonflik();
         
         
         $jadwal = Jadwal::with('hari', 'pengajar', 'jam', 'ruangan')
@@ -33,44 +34,62 @@ class GenetikaController extends Controller
         
         // dd($jadwal);
 
-        return view('home', compact('jadwal', 'hari', 'ruangan', 'pengajar', 'jam', 'data_yangKonflik'));
+        return view('coba', compact('jadwal', 'hari', 'ruangan', 'pengajar', 'jam'));
     }
 
     public function submit(Request $request){
 
         $input_semester = 'Ganjil';
-        $input_kromosom = 10; //sesuaikan
-        $input_generasi = 200; //sesuaikan
+        // $input_kromosom = 10; //sesuaikan
+        // $input_generasi = 20; //sesuaikan
         $input_crossover = 0.5; //sesuaikan
         $input_mutasi = 0.1;  //sesuaikan
         $count_pengajar = Pengajar::count();
+        $size_population = 35; //bisa disesuaikan
 
         // dd($input_generasi);
 
-        $kromosom = $input_kromosom * $input_generasi;
-        $crossover = $input_kromosom * $input_crossover; 
+        // $kromosom = $input_kromosom * $input_generasi;
+        $kromosom = 20;
+        $crossover = 20 * $input_crossover; //ganti 20 menjadi $input_kromosom
         
-        $generate = new GenerateGA;
-        $data_kromosom = $generate->randKromosom($kromosom, $count_pengajar, $input_semester);
+        $generate = new AlgoritmaGenetik2;
 
-        $data_kromosom = $generate->doCrossover($data_kromosom, $crossover);
-        $totalMutasi = (3 * $count_pengajar) * $input_kromosom * $input_mutasi;
-        $data_kromosom = $generate->doMutation($data_kromosom, $totalMutasi, $count_pengajar);
-
-        dd($data_kromosom);
-
-        $total_gen = Setting::firstOrNew(['key' => 'total_gen']);
-        $total_gen->nama = 'Total Gen';
-        $total_gen->value = $crossover;
-        $total_gen->save();
+        $population = $generate->initPopulation($kromosom, $count_pengajar, $input_semester);
         
-        $mutasi = Setting::firstOrNew(['key' => 'mutasi']);
-        $mutasi->nama = 'Mutasi';
-        $mutasi->value = $totalMutasi;
-        $mutasi->save();
+        
+        // $fitness = $generate->FitnessCheck($population);
+        //lakukan iterasi
+        $offsprings = $generate->doCrossover($population, $count_pengajar, $size_population);
+        $new_population = $generate->doMutation($population, $count_pengajar, $kromosom); //ganti kromosom menjadi input kromosom
+        $fitness = $generate->FitnessCheck($new_population);
 
-        $result_schedules = $generate->checkPinalty($data_kromosom);
-        return redirect()->route('kurikulum.tampil'); //ganti rute
+        $jadwal_arr = $generate->doSelection($new_population, $offsprings);
+
+        $jadwal_obj = collect($jadwal_arr);
+
+        // usort($jadwal_arr, function($a, $b) {
+        //     return $a->id_hari <=> $b->id_hari;
+        // });
+        
+        // usort($jadwal_arr, function($a, $b) {
+        //     return $a->id_jam <=> $b->id_jam;
+        // });
+
+        // $ids = array_map(function($jadwal) {
+        //     return $jadwal['id']; // Ekstrak ID dari setiap objek dalam array
+        // }, $jadwal_arr);
+
+        // Ambil data dari database berdasarkan ID
+        $jadwal = Jadwal::whereIn('id', $jadwal_obj->id)
+            ->orderBy('id_hari', 'asc')
+            ->orderBy('id_jam', 'asc')
+            ->get();
+        
+        // dd("genControl jadwalFromDatabase", gettype($jadwalFromDatabase), $jadwalFromDatabase);
+        // $result_schedules = $generate->checkPinalty($data_kromosom);
+        return view('coba', compact('jadwal', 'fitness'));
+        // return redirect()->route('coba.tampil');
 
     }
 
@@ -96,7 +115,7 @@ class GenetikaController extends Controller
                 ];
             }
 
-            return view('kurikulum.tampil', compact('crossover', 'mutasi', 'value_schedule', 'jadwal', 'data_kromosom', 'id'));
+            return view('coba.tampil', compact('crossover', 'mutasi', 'value_schedule', 'jadwal', 'data_kromosom', 'id'));
     }
 
     public function cekSemester($jenis_semester){

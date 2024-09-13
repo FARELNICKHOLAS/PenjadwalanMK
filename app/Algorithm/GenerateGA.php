@@ -54,6 +54,7 @@ class GenerateGA
                 while ($this->isScheduleConflict($hari, $jam, $ruangan)) {
                     $hari = Hari::where('kode', '!=', 5)->inRandomOrder()->first();
                     $jam = Jam::inRandomOrder()->first();
+                    $ruangan = Ruangan::inRandomOrder()->first();
                 }
                 
                 if ($pengajar && $hari && $ruangan && $jam) {
