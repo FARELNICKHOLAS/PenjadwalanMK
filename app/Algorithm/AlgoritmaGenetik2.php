@@ -295,6 +295,7 @@ class AlgoritmaGenetik2
                 $population[$indexOfIndividu] = $selectedIndividu;
                 
                 // dd("mutasi selectedIndividu: ", $selectedIndividu, "population: ", $population, "Cloning: ", $cloning);
+                dd($mutatedGen);
             }
         }else{
             abort(404, 'Jumlah Mutasi 0');
