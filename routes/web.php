@@ -123,3 +123,4 @@ Route::get('/kurikulum/generate/result/{$id}', [GenetikaController::class, 'resu
 Route::get('/coba', [GenetikaController::class, 'tampil'])->name('coba.tampil');
 
 Route::get('/coba/generate', [GenetikaController::class, 'submit'])->name('coba.generate');
+

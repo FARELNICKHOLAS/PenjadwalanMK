@@ -13,12 +13,14 @@
 
 <table class="table">
     <tr>
+        <th>No</th>
         <th>NIP</th>
         <th>Nama Dosen</th>
         <th>Aksi</th>
     </tr>
     @foreach($dosen as $no=>$data)
     <tr>
+        <td>{{$data->id}}</td>
         <td>{{$data->nip}}</td>
         <td>{{$data->nama}}</td>
         <td><a href="{{ route('dosen.edit', $data->id) }}" class="btn btn-primary">Edit</a>
@@ -31,5 +33,6 @@
     </tr>
     @endforeach   
 </table>
+{{ $dosen->links() }}
 
 @endsection

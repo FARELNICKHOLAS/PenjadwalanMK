@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class LectureController extends Controller
 {
     public function index(Request $request){
-        $dosen = Dosen::orderBy('id', 'desc');
+        $dosen = Dosen::orderBy('id', 'asc',);
         if(!empty($request->searchname)){
             $dosen = $dosen->where('nama', 'LIKE', '%' . $request->searchname . '%');
         }
@@ -18,7 +18,7 @@ class LectureController extends Controller
             $dosen = $dosen->where('nip', 'LIKE', '%' . $request->searchnip . '%');
         }
 
-        $dosen = $dosen->paginate(10);
+        $dosen = $dosen->paginate(5);
 
         return view('dosen.tampil', compact('dosen')); //perbaiki dengan mengisi path yang benar
     }
