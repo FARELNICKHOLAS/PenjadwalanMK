@@ -6,12 +6,11 @@ use App\Http\Controllers\DayController;
 use App\Http\Controllers\GenetikaController;
 use App\Http\Controllers\JamController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\LectureController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeachController;
-
-Route::get('/', [GenetikaController::class, 'tampil'])->name('kurikulum.tampil');
 
 // hari
 Route::get('/hari', [DayController::class, 'tampil'])->name('hari.tampil');
@@ -116,11 +115,14 @@ Route::post('/importexcel', [PengajarController::class, 'importexcel'])->name('i
 
 Route::post('/deletedata', [PengajarController::class, 'delete'])->name('deletedata');
 
-Route::get('/kurikulum/generate', [GenetikaController::class, 'submit'])->name('kurikulum.generate');
+// Generate
 
-Route::get('/kurikulum/generate/result/{$id}', [GenetikaController::class, 'result'])->name('kurikulum.result');
+Route::get('/', [GenetikaController::class, 'tampil'])->name('jadwal.tampil');
 
-Route::get('/coba', [GenetikaController::class, 'tampil'])->name('coba.tampil');
+Route::post('/jadwal/generate', [GenetikaController::class, 'submit'])->name('jadwal.generate');
 
-Route::get('/coba/generate', [GenetikaController::class, 'submit'])->name('coba.generate');
+Route::get('/jadwal/hapus', [KurikulumController::class, 'delete'])->name('jadwal.delete');
+
+Route::get('/jadwal/print', [KurikulumController::class, 'cetakJadwal'])->name('jadwal.cetak');
+
 

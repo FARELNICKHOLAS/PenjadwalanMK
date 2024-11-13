@@ -127,8 +127,6 @@
                         <th scope="col">ID</th>
                         <th scope="col" class="kode-matakuliah">Matakuliah</th>
                         <th scope="col" class="jumlah-dosen">Dosen Pengampu</th>
-                        <th scope="col" class="Kelas-ygDiajar">Kelas yang Diajar</th>
-                        {{-- <th scope="col">Edit</th> --}}
                     </tr>
                 </thead>
                 <tbody>
@@ -137,7 +135,6 @@
                     <td>{{ $data->kode_ajaran }}</td>
                     <td>{{ $data->matkul->nama_matkul }}</td>
                     <td class="jumlah-dosen">{{ $data->dosen->nama }}</td>
-                    <td>{{ $data->namakelas->nama }}</td>
                     </tr>
                 @endforeach
                 </tbody>

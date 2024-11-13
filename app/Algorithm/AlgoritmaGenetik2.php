@@ -5,7 +5,6 @@ namespace app\Algorithm;
 use App\Models\Hari;
 use App\Models\Jam;
 use App\Models\Jadwal;
-use App\Models\matakuliah;
 use App\Models\Ruangan;
 use App\Models\Pengajar;
 use Illuminate\Support\Facades\DB;
@@ -14,179 +13,242 @@ class AlgoritmaGenetik2
 {
 
     //Inisialisasi
-
-    public function initPopulation($kromosom, $count_pengajar, $input_semester){
-
-        //$count_pengajar == panjang gen untuk membangun individu
-        //$kromosom == untuk membangun populasi
-
+    public function initPopulation($input_semester) {
         Jadwal::truncate();
         $population = [];
         
-        for($i = 0; $i < 10; $i++){
-
+        // Ukuran populasi awal
+        $populationSize = 10;
+        
+        for($i = 0; $i < $populationSize; $i++) {
             $individuUmum = [];
             $individuSelainUmum = [];
-
-            $count_matkulUmum = Pengajar::with('matkul')
-                ->whereHas('matkul', function($query) use ($input_semester){
-                    $query->where('jenis_semester', $input_semester)
-                            ->where('tipe', 'Umum');
-                    })
-                ->orderBy('id', 'asc')
-                ->count();
-
-            //Untuk mengambil list pengajar dengan tipe matkul SELAIN Umum
-            $listPengajarWajib = Pengajar::with('matkul')
-                ->whereHas('matkul', function($query) use ($input_semester){
-                    $query->where('jenis_semester', $input_semester)
-                            ->where('tipe', '!=', 'Umum');
-                    })
+            
+            $allPengajar = Pengajar::with(['matkul', 'dosen'])
+                ->whereHas('matkul', function($query) use ($input_semester) {
+                    $query->where('jenis_semester', $input_semester);
+                })
                 ->orderBy('id', 'asc')
                 ->get();
-
-            //Untuk mengambil list pengajar dengan tipe matkul Umum
-            $listPengajarUmum = Pengajar::with('matkul')
-                    ->whereHas('matkul', function($query) use ($input_semester){
-                        $query->where('jenis_semester', $input_semester)
-                                ->where('tipe', 'Umum');
-                        })
-                    ->orderBy('id', 'asc')
-                    ->get();
+                
+            // Memisahkan matkul umum/lainnya
+            $pengajarUmum = $allPengajar->filter(function($pengajar) {
+                return $pengajar->matkul->tipe === 'Umum';
+            });
             
-            $count_matkulSelainUmum = $count_pengajar - $count_matkulUmum;
-
-            //inisialisasi kromosom SELAIN umum
-            for($j = 0; $j < $count_matkulSelainUmum; $j++){
-                // dd($listPengajarWajib);
-
-                $pengajar = $listPengajarWajib[$j];
-
-                $hari = Hari::where('kode', '!=', 5)
-                            ->inRandomOrder()
-                            ->first();
-                $jam = Jam::inRandomOrder()
-                            ->first();
-                $ruangan = Ruangan::inRandomOrder()
-                            ->first();
-
-                if($jam && $ruangan && $pengajar && $hari){
+            $pengajarSelainUmum = $allPengajar->filter(function($pengajar) {
+                return $pengajar->matkul->tipe !== 'Umum';
+            });
+    
+            foreach($pengajarSelainUmum as $pengajar) {
+                $availableSlots = $this->getAvailableSlots($pengajar, $individuSelainUmum);
+                
+                if(empty($availableSlots)) {
+                    $this->reallocateSchedules($individuSelainUmum);
+                    $availableSlots = $this->getAvailableSlots($pengajar, $individuSelainUmum);
+                }
+                
+                if(!empty($availableSlots)) {
+                    $selectedSlot = $availableSlots[array_rand($availableSlots)];
+                    
                     $params = [
                         'id_pengajar' => $pengajar->id,
-                        'id_hari' => $hari->kode,
-                        'id_jam' => $jam->id,
-                        'ruang_kelas' => $ruangan->id,
-                        'tipe' => $i+1,
+                        'id_hari' => $selectedSlot['hari'],
+                        'id_jam' => $selectedSlot['jam'],
+                        'ruang_kelas' => $selectedSlot['ruangan'],
+                        'tipe' => $i + 1,
                     ];
-                }else{
-                    abort(404);
+                    
+                    $individuSelainUmum[] = Jadwal::create($params);
                 }
-
-                
-                $individuSelainUmum[] = Jadwal::create($params);
-                
             }
-
-            //inisialisasi kromosom Umum
-            for($k = 0; $k < $count_matkulUmum; $k++){
-
-                $pengajar = $listPengajarUmum[$k];
-
-                $hari = Hari::where('kode', 5)
-                            ->inRandomOrder()
-                            ->first();
-                $jam = Jam::inRandomOrder()
-                            ->first();
-                $ruangan = Ruangan::inRandomOrder()
-                            ->first();
-
-                if($jam && $ruangan && $pengajar && $hari){
+    
+            foreach($pengajarUmum as $pengajar) {
+                $availableSlots = $this->getAvailableSlotsUmum($pengajar, $individuUmum);
+                
+                if(!empty($availableSlots)) {
+                    $selectedSlot = $availableSlots[array_rand($availableSlots)];
+                    
                     $params = [
                         'id_pengajar' => $pengajar->id,
-                        'id_hari' => $hari->kode,
-                        'id_jam' => $jam->id,
-                        'ruang_kelas' => $ruangan->id,
-                        'tipe' => $i+1,
+                        'id_hari' => 5,
+                        'id_jam' => $selectedSlot['jam'],
+                        'ruang_kelas' => $selectedSlot['ruangan'],
+                        'tipe' => $i + 1,
                     ];
-                }else{
-                    abort(404);
+                    
+                    $individuUmum[] = Jadwal::create($params);
                 }
-
-                $individuUmum[] = Jadwal::create($params);
             }
-
-            //menggabungkan individu umum dan individu selain umum
+    
             $individu = array_merge($individuSelainUmum, $individuUmum);
-            //mengisi nilai $population dengan nilai $individu
             $population = $individu;
         }
-        // dd($individu);
-
-
+    
         return $population;
+    }
+    
+    private function getAvailableSlots($pengajar, $existingSchedules) {
+        $availableSlots = [];
+        
+        for($hari = 1; $hari <= 4; $hari++) {
+            $jams = Jam::all();
+            
+            foreach($jams as $jam) {
+                $ruangans = Ruangan::all();
+                
+                foreach($ruangans as $ruangan) {
+                    $conflict = false;
+                    
+                    foreach($existingSchedules as $schedule) {
+                        if($schedule->id_hari == $hari && 
+                           $schedule->id_jam == $jam->id && 
+                           $schedule->ruang_kelas == $ruangan->id) {
+                            $conflict = true;
+                            break;
+                        }
+                        
+                        // Cek konflik dosen
+                        if($schedule->id_hari == $hari && 
+                           $schedule->id_jam == $jam->id && 
+                           $schedule->Pengajar->id_dosen == $pengajar->id_dosen) {
+                            $conflict = true;
+                            break;
+                        }
+                        
+                        // Cek konflik kelas
+                        if($schedule->id_hari == $hari && 
+                           $schedule->id_jam == $jam->id && 
+                           $schedule->Pengajar->kelas == $pengajar->kelas) {
+                            $conflict = true;
+                            break;
+                        }
+                    }
+                    
+                    if(!$conflict) {
+                        $availableSlots[] = [
+                            'hari' => $hari,
+                            'jam' => $jam->id,
+                            'ruangan' => $ruangan->id
+                        ];
+                    }
+                }
+            }
+        }
+        
+        return $availableSlots;
+    }
+    
+    private function getAvailableSlotsUmum($pengajar, $existingSchedules) {
+        $availableSlots = [];
+        
+        $jams = Jam::all();
+        
+        foreach($jams as $jam) {
+            $ruangans = Ruangan::all();
+            
+            foreach($ruangans as $ruangan) {
+                $conflict = false;
+                
+                foreach($existingSchedules as $schedule) {
+                    if($schedule->id_jam == $jam->id && 
+                       $schedule->ruang_kelas == $ruangan->id) {
+                        $conflict = true;
+                        break;
+                    }
+                    
+                    if($schedule->id_jam == $jam->id && 
+                       $schedule->Pengajar->kelas == $pengajar->kelas) {
+                        $conflict = true;
+                        break;
+                    }
+                }
+                
+                if(!$conflict) {
+                    $availableSlots[] = [
+                        'jam' => $jam->id,
+                        'ruangan' => $ruangan->id
+                    ];
+                }
+            }
+        }
+        
+        return $availableSlots;
+    }
+    
+    private function reallocateSchedules(&$schedules) {
+        // hapus jadwal terakhir untuk membuat ruang
+        if(!empty($schedules)) {
+            array_pop($schedules);
+        }
     }
 
     //fitness
-
     public function FitnessCheck($population) {
         $fitnessValues = [];
         $conflictsData = [];
-        $count_pengajar = Pengajar::count();
-        $populationFitness = 0; // Untuk Stopping Criteria
+        $currentConflicts = [];
+        $populationFitness = 0;
         $fitnessValueSum = 0;
-    
         foreach ($population as $individu) {
             $conflicts = 0;
-            $currentConflicts = []; 
-            
             $jadwal = Jadwal::whereIn('id', $individu)->get();
             
             foreach ($jadwal as $i => $jadwal1) {
                 for ($j = $i + 1; $j < count($jadwal); $j++) {
                     $jadwal2 = $jadwal[$j];
-                    
-                    if (($jadwal1->id_hari == $jadwal2->id_hari &&
-                    $jadwal1->id_jam == $jadwal2->id_jam &&
-                    $jadwal1->ruang_kelas == $jadwal2->ruang_kelas) ||
-                    ($jadwal1->id_hari == $jadwal2->id_hari &&
-                    $jadwal1->id_jam == $jadwal2->id_jam &&
-                    $jadwal1->pengajar->id_dosen == $jadwal2->pengajar->id_dosen) ||
-                    ($jadwal1->id_hari == $jadwal2->id_hari &&
-                    $jadwal1->id_jam == $jadwal2->id_jam &&
-                    $jadwal1->id_pengajar == $jadwal2->id_pengajar)) {
-                        $conflicts++;
-                        $currentConflicts[] = [$jadwal1->id, $jadwal2->id];
+
+                    //Jika hari dan sesi sama
+                    if($jadwal1->id_hari==$jadwal2->id_hari && 
+                        $jadwal1->id_jam==$jadwal2->id_jam){
+                            //Cek apakah ruangan sama 
+                            if($jadwal1->ruang_kelas==$jadwal2->ruang_kelas){
+                                $conflicts++;
+                                $currentConflicts[] = [$jadwal1->id, $jadwal2->id];
+                            }elseif($jadwal1->Pengajar->id_dosen == $jadwal2->Pengajar->id_dosen){
+                                //Cek apakah dosen sama
+                                $conflicts++;
+                                $currentConflicts[] = [$jadwal1->id, $jadwal2->id];
+                            }
+                            elseif($jadwal1->Pengajar->kode_matkul ==$jadwal2->Pengajar->kode_matkul){
+                                //Cek apakah kelas mahasiswa yang mengambil matkul sama
+                                $conflicts++;
+                                $currentConflicts[] = [$jadwal1->id, $jadwal2->id];
+                            }
+                            elseif($jadwal1->id_pengajar ==$jadwal2->id_pengajar){
+                                //Cek apakah ada matkul yang sama diambil 2 kali dalam seminggu
+                                $conflicts++;
+                                $currentConflicts[] = [$jadwal1->id, $jadwal2->id];
+                            }
                     }
                 }
             }
-            // dd("Individu: ", $individu, "Jadwal: ", $jadwal, "tipedata jadwal: ", gettype($jadwal), "fitnessValue: ", $fitnessValue);
             
+
+            //Hitung fitness
             $fitnessValue = 1 / (1 + $conflicts);
             $fitnessValueSum += $fitnessValue;
             $fitnessValues[] = $fitnessValue;
             $conflictsData[] = $currentConflicts;
-            $populationFitness = $fitnessValueSum / $count_pengajar;
-
-
-            // Update nilai fitness ke setiap jadwal dalam individu
-            foreach ($jadwal as $j) {
-                $j->value = $fitnessValue; // Menyimpan fitness ke kolom 'value'
-                $j->save(); // Simpan perubahan ke database
-            }
+            $populationFitness = $fitnessValueSum / count($population);
+            
+            $individu->value = $fitnessValue;
+            $individu->save();
+            
         }
-        // dd("FitnessValues", $fitnessValues, "ConflictData", $conflictsData);
-        return ['fitness Values' => $fitnessValues, 'Jadwal Bentrok' => $conflictsData, 'Total Fitness' => $populationFitness];
+
+        return ['fitness Values' => $fitnessValues, 
+                'conflicts Data' => $conflictsData,
+                'Total Fitness' => $populationFitness
+            ];
     }
     
     //Crossover
-    
-
     public function randomZeroToOne(){
         return (float) rand() / (float) getrandmax();
     }
 
     public function offspring($count_pengajar, $parent1, $parent2, $cutPointIndex, $offspring){
-        // $count_pengajar = Pengajar::count();
         $result = [];
 
         if ($offspring === 1) {
@@ -217,21 +279,61 @@ class AlgoritmaGenetik2
     }
 
     public function cutPointRandom($count_pengajar){
-        // $count_pengajar = Pengajar::count();
         return rand(0, $count_pengajar-1);
     }
 
+    public function createOffspringModel($offspring) {
+        $offspringModel = new Jadwal();
+        $offspringModel->id_pengajar = $offspring['id_pengajar'];
+        $offspringModel->id_hari = $offspring['id_hari'];
+        $offspringModel->id_jam = $offspring['id_jam'];
+        $offspringModel->ruang_kelas = $offspring['ruang_kelas'];
+        $offspringModel->tipe = $offspring['tipe'];
+        $offspringModel->save();
+    
+        return $offspringModel;
+    }
+
+    public function randomHari() {
+        return rand(1, 4);
+    }
+    
+    public function randomJam() {
+        return rand(1, 3);
+    }
+    
+    public function randomPengajar() {
+        $pengajar = Pengajar::all()->pluck('id')->toArray();
+        return $pengajar[array_rand($pengajar)];
+    }
+    
+    public function randomRuangKelas() {
+        $ruang_kelas = Ruangan::all()->pluck('id')->toArray();
+        return $ruang_kelas[array_rand($ruang_kelas)];
+    }
+
+    public function mutateOffspring($offspring) {
+        $offspring['id_hari'] = $this->randomHari();
+        $offspring['id_jam'] = $this->randomJam();
+    
+        if ($this->randomZeroToOne() < 0.5) {
+            $offspring['ruang_kelas'] = $this->randomRuangKelas();
+        }
+    
+        return $offspring;
+    }
+
     public function doCrossover($population, $count_pengajar, $size_population){
-        // crossover rate = 0.8
         $crossover_rate = 0.8;
+        $offsprings = [];
 
         for($i = 0; $i < $size_population; $i++){
-           $randZeroToOne = $this->randomZeroToOne();
-           if($randZeroToOne < $crossover_rate){
-            $parents[$i] = $randZeroToOne;
-           }
+            $randZeroToOne = $this->randomZeroToOne();
+            if($randZeroToOne < $crossover_rate){
+                $parents[$i] = $randZeroToOne;
+            }
         }
-
+        
         foreach(array_keys($parents) as $key){
             foreach(array_keys($parents) as $subkey){
                 if($key !== $subkey){
@@ -240,29 +342,24 @@ class AlgoritmaGenetik2
             }
             array_shift($parents);
         }
-
+        
         $cutPointIndex = $this->cutPointRandom($count_pengajar);
-     
-
+        
         foreach($result as $listOfCrossOver){
             $parent1 = $population[$listOfCrossOver[0]]->toArray();
             $parent2 = $population[$listOfCrossOver[1]]->toArray();
-            //Child
+            // Child
             $offspring1 = $this->offspring($count_pengajar, $parent1, $parent2, $cutPointIndex, 1);
             $offspring2 = $this->offspring($count_pengajar, $parent1, $parent2, $cutPointIndex, 2);
-            
-            $offsprings[] = $offspring1;
-            $offsprings[] = $offspring2;
-            
+
+            $offsprings[] = $this->createOffspringModel($offspring1);
+            $offsprings[] = $this->createOffspringModel($offspring2);
         }
-        
-        dd($offsprings);
         
         return $offsprings;
     }
 
     //Mutation
-
     public function getRandomIndexOfGen($count_pengajar){
         return rand(0, ($count_pengajar - 1));
     }
@@ -271,90 +368,219 @@ class AlgoritmaGenetik2
         return rand(0, $input_kromosom - 1);
     }
 
-    public function doMutation($population, $count_pengajar, $input_kromosom){
-        //mutation rate (mr) = 1/jmlKromosom
-        //JmlMutation = mr * jmlpopulation
-        $jumlahGen = $count_pengajar;
-        $mr = 1 / $jumlahGen;
+    public function doMutation($population, $count_pengajar, $input_kromosom) {
+        $mr = 1 / $count_pengajar;
         $JmlMutation = round($mr * $input_kromosom);
-
-        if($JmlMutation > 0){
-            for($i = 0; $i < $JmlMutation; $i++){
-                $indexOfIndividu = $this->getRandomIndexOfIndividu($input_kromosom);
-                $selectedIndividu = $population[$indexOfIndividu];
-                // $cloning = clone $selectedIndividu;
-                $mutatedGen = $selectedIndividu;
-                
-                //proses utama mutasi
-                $mutatedGen->id_hari = Hari::inRandomOrder()->first()->kode;
-                $mutatedGen->id_jam = Jam::inRandomOrder()->first()->id;
-                $mutatedGen->ruang_kelas = Ruangan::inRandomOrder()->first()->id;
-                $mutatedGen->save();
-                
-                $selectedIndividu = $mutatedGen;
-                $population[$indexOfIndividu] = $selectedIndividu;
-                
-                // dd("mutasi selectedIndividu: ", $selectedIndividu, "population: ", $population, "Cloning: ", $cloning);
-                dd($mutatedGen);
+    
+        for ($i = 0; $i < $JmlMutation; $i++) {
+            // Pilih individu acak
+            $individuIndex = $this->getRandomIndexOfIndividu(count($population));
+            $individu = $population[$individuIndex];
+    
+            // Cari nilai baru untuk mutasi
+            $hari = Hari::inRandomOrder()->first()->kode; 
+            $jam = Jam::inRandomOrder()->first()->id;
+            $ruangan = Ruangan::inRandomOrder()->first()->id; 
+    
+            // Periksa konflik sebelum ubah
+            $conflictExists = Jadwal::where('id_hari', $hari)
+                                    ->where('id_jam', $jam)
+                                    ->where('ruang_kelas', $ruangan)
+                                    ->exists();
+            
+            // Jika tidak ada konflik, lakukan mutasi
+            if (!$conflictExists) {
+                $individu->id_hari = $hari;
+                $individu->id_jam = $jam;
+                $individu->ruang_kelas = $ruangan;
+                $individu->save();
             }
-        }else{
-            abort(404, 'Jumlah Mutasi 0');
         }
-
         return $population;
     }
     
-    public function doSelection($population, $offsprings) {
-        // Gabungkan populasi dengan offsprings
-        // $combinedPopulation = array_merge($population, $offsprings);
-        $combinedPopulation = array_merge($population, $offsprings);
-        // $combinedPopulation[] = $offsprings;
-        // dd("genalgorithm", gettype($combinedPopulation), $combinedPopulation);
+    //selection
+    public function fitnessSorting($temporaryPop, $population_size) {
+        $fitTemporaryPop = [];
+        
+        foreach ($temporaryPop as $key => $individu) {
+            $fitnessData = $this->FitnessCheck($temporaryPop);
+            $fitnessValue = $fitnessData['fitness Values'][0];
+            
+            $fitTemporaryPop[] = [
+                'fitnessValue' => $fitnessValue,
+                'individuIndex' => $key
+            ];
+        }
     
-        // Periksa nilai fitness untuk seluruh populasi gabungan
-        // dd("tipe data: ", gettype($combinedPopulation), "value combinePopulation: ", $combinedPopulation);
-        $fitnessData = $this->FitnessCheck($combinedPopulation);
-        
-        // Pastikan penamaan key konsisten (tidak ada spasi)
-        $fitnessValues = $fitnessData['fitness Values']; // ubah ke format yang benar
-        
-        // Urutkan populasi berdasarkan nilai fitness (desc)
-        if (count($fitnessValues) === count($combinedPopulation)) {
-            array_multisort($fitnessValues, SORT_DESC, $combinedPopulation);
-        } else {
-            // Jika panjang tidak sama, cukup kembalikan populasi gabungan tanpa di-sort
-            return $combinedPopulation;
+        usort($fitTemporaryPop, function ($a, $b) {
+            return $b['fitnessValue'] <=> $a['fitnessValue'];
+        });
+    
+        $fitTemporaryPop = array_slice($fitTemporaryPop, 0, $population_size);
+    
+        $sortedPopulation = [];
+        foreach ($fitTemporaryPop as $item) {
+            $sortedPopulation[] = $temporaryPop[$item['individuIndex']];
         }
-        
-        $newPopulation = array_slice($combinedPopulation, 0, intval(count($combinedPopulation) / 2));
-        
-        $newFitnessData = $this->FitnessCheck($newPopulation);
-        $newConflictsData = $newFitnessData['Jadwal Bentrok'];
-        
-        $maxIterations = 15000;
-        $iteration = 0;
-        
-        while (array_sum(array_map('count', $newConflictsData)) > 0 && $iteration < $maxIterations) {
-            // Cari individu dengan jumlah konflik maksimal
-            $conflictCounts = array_map('count', $newConflictsData);
-            $maxConflictsIndex = array_search(max($conflictCounts), $conflictCounts);
-        
-            // Hapus individu dengan konflik terbanyak dari populasi baru
-            if (isset($newPopulation[$maxConflictsIndex])) {
-                unset($newPopulation[$maxConflictsIndex]);
-            }
-        
-            // Reindex array setelah penghapusan
-            $newPopulation = array_values($newPopulation);
-            $newFitnessData = $this->FitnessCheck($newPopulation);
-            $newConflictsData = $newFitnessData['Jadwal Bentrok'];
-        
-            $iteration++;
-        }
-        
-        // Kembalikan populasi baru yang sudah bebas konflik
-        return $newPopulation;
+    
+        return $sortedPopulation;
     }
     
+
+    public function doSelection($latestPop, $count_pengajar) {
+        $fitnessData = $this->FitnessCheck($latestPop);
+        $fitnessValues = $fitnessData['fitness Values'];
+        $totalFitness = $fitnessData['Total Fitness'];
+    
+        $population = Jadwal::with('Pengajar')->get();
+        
+        $allPengajar = Pengajar::pluck('id')->toArray();
+        $scheduledPengajar = [];
+    
+        $rouletteWheel = [];
+        foreach ($fitnessValues as $index => $fitness) {
+            $probability = $fitness / $totalFitness;
+            $rouletteWheel[$index] = $probability + ($rouletteWheel[$index - 1] ?? 0);
+        }
+    
+        $selectedPopulation = [];
+        $maxIter = $count_pengajar + 40;
+        $iter = 0;
+    
+        while ($iter < $maxIter && count($scheduledPengajar) < count($allPengajar)) {
+            $randomValue = mt_rand() / mt_getrandmax();
+            $iter++;
+    
+            foreach ($rouletteWheel as $index => $threshold) {
+                $jadwal = $population->firstWhere('id', $latestPop[$index]['id']);
+                
+                if (in_array($jadwal->id_pengajar, $scheduledPengajar)) {
+                    continue;
+                }
+    
+                $data = [
+                    'id individu' => $jadwal->id,
+                    'id dosen' => $jadwal->Pengajar->id_dosen,
+                    'id hari' => $jadwal->id_hari,
+                    'id jam' => $jadwal->id_jam,
+                    'id ruangan' => $jadwal->ruang_kelas,
+                    'id kelas' => $jadwal->Pengajar->kelas,
+                    'id matkul' => $jadwal->Pengajar->kode_matkul,
+                    'id_pengajar' => $jadwal->id_pengajar
+                ];
+    
+                $isConflict = false;
+                foreach ($selectedPopulation as $selected) {
+                    if (($selected['id dosen'] == $data['id dosen'] && 
+                         $selected['id hari'] == $data['id hari'] && 
+                         $selected['id jam'] == $data['id jam']) ||
+                        ($selected['id ruangan'] == $data['id ruangan'] && 
+                         $selected['id hari'] == $data['id hari'] && 
+                         $selected['id jam'] == $data['id jam']) ||
+                        ($selected['id kelas'] == $data['id kelas'] && 
+                         $selected['id hari'] == $data['id hari'] && 
+                         $selected['id jam'] == $data['id jam']) ||
+                        ($selected['id kelas'] == $data['id kelas'] && 
+                         $selected['id matkul'] == $data['id matkul']) ||
+                        ($selected['id dosen'] == $data['id dosen'] && 
+                         $selected['id matkul'] == $data['id matkul'])) {
+                        $isConflict = true;
+                        break;
+                    }
+                }
+    
+                if ($randomValue <= $threshold && !$isConflict) {
+                    $selectedPopulation[] = $data;
+                    $scheduledPengajar[] = $data['id_pengajar'];
+                    break;
+                }
+            }
+
+        }
+    
+        foreach ($allPengajar as $pengajarId) {
+            if (!in_array($pengajarId, $scheduledPengajar)) {
+                $possibleSchedule = $population->first(function ($jadwal) use ($pengajarId, $selectedPopulation) {
+                    if ($jadwal->id_pengajar != $pengajarId) {
+                        return false;
+                    }
+    
+                    $data = [
+                        'id individu' => $jadwal->id,
+                        'id dosen' => $jadwal->Pengajar->id_dosen,
+                        'id hari' => $jadwal->id_hari,
+                        'id jam' => $jadwal->id_jam,
+                        'id ruangan' => $jadwal->ruang_kelas,
+                        'id kelas' => $jadwal->Pengajar->kelas,
+                        'id matkul' => $jadwal->Pengajar->kode_matkul,
+                        'id_pengajar' => $jadwal->id_pengajar
+                    ];
+    
+                    foreach ($selectedPopulation as $selected) {
+                        if (($selected['id dosen'] == $data['id dosen'] && 
+                             $selected['id hari'] == $data['id hari'] && 
+                             $selected['id jam'] == $data['id jam']) ||
+                            ($selected['id ruangan'] == $data['id ruangan'] && 
+                             $selected['id hari'] == $data['id hari'] && 
+                             $selected['id jam'] == $data['id jam']) ||
+                            ($selected['id kelas'] == $data['id kelas'] && 
+                             $selected['id hari'] == $data['id hari'] && 
+                             $selected['id jam'] == $data['id jam']) ||
+                            ($selected['id kelas'] == $data['id kelas'] && 
+                             $selected['id matkul'] == $data['id matkul']) ||
+                            ($selected['id dosen'] == $data['id dosen'] && 
+                             $selected['id matkul'] == $data['id matkul'])) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+    
+                if ($possibleSchedule) {
+                    $data = [
+                        'id individu' => $possibleSchedule->id,
+                        'id dosen' => $possibleSchedule->Pengajar->id_dosen,
+                        'id hari' => $possibleSchedule->id_hari,
+                        'id jam' => $possibleSchedule->id_jam,
+                        'id ruangan' => $possibleSchedule->ruang_kelas,
+                        'id kelas' => $possibleSchedule->Pengajar->kelas,
+                        'id matkul' => $possibleSchedule->Pengajar->kode_matkul,
+                        'id_pengajar' => $possibleSchedule->id_pengajar
+                    ];
+                    $selectedPopulation[] = $data;
+                    $scheduledPengajar[] = $pengajarId;
+                }
+            }
+        }
+    
+        $selectedIds = array_column($selectedPopulation, 'id individu');
+        DB::table('jadwal')
+            ->whereNotIn('id', $selectedIds)
+            ->delete();
+
+        $pengajarHilang = $this->checkPengajar();
+    
+        return [
+            'SelectedPop' => $selectedPopulation,
+            'PengajarHilang' => $pengajarHilang, 
+        ];
+    }
+
+    //For Debugging
+    public function checkPengajar(){
+        $pengajar = Pengajar::get();
+        $jadwal = Jadwal::pluck('id_pengajar')->toArray();
+  
+        $pengajarHilang = [];
+    
+        foreach($pengajar as $data){
+            if (!in_array($data->id, $jadwal)) {
+                $pengajarHilang[] = $data->id;
+            }
+        }
+    
+        return $pengajarHilang;
+    }
 
 }

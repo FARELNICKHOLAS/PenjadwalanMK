@@ -16,6 +16,13 @@
     font-weight: 500;
 }
 
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    border-radius: 8px;
+}
+
 .navbar-nav .nav-item {
     padding-left: 20px;
     padding-right: 20px;

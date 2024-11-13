@@ -3,7 +3,6 @@
 namespace App\Imports;
 
 use App\Models\Dosen;
-use App\Models\kelas;
 use App\Models\Pengajar;
 use App\Models\matakuliah;
 use Maatwebsite\Excel\Concerns\ToModel;
@@ -21,12 +20,11 @@ class PengajarImport implements ToModel, WithHeadingRow
     {
         $idMatkul = $this->getIdMatkul($row);
         $idDosen = $this->getIdDosen($row);
-        $idNamaKelas = $this->getIdNamaKelas($row);
         return new Pengajar([
             'kode_ajaran' => $row['kode_ajaran'],
             'id_dosen' => $idDosen,
             'kode_matkul' => $idMatkul,
-            'id_namakelas' => $idNamaKelas,
+            'kelas' => $row['kode'],
         ]);
     }
 
@@ -48,12 +46,4 @@ class PengajarImport implements ToModel, WithHeadingRow
         }
     }
 
-    public function getIdNamaKelas(array $row){
-        $idNamaKelas = kelas::where('nama', $row['kelas_diampu'])->first();
-        if ($idNamaKelas) {
-            return $idNamaKelas->id;
-        } else {
-            return 0;
-        }
-    }
 }
