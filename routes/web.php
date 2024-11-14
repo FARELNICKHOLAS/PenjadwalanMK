@@ -3,16 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MKController;
 use App\Http\Controllers\DayController;
+use App\Http\Controllers\GenetikaController;
 use App\Http\Controllers\JamController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KurikulumController;
 use App\Http\Controllers\LectureController;
 use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeachController;
-
-Route::get('/', function () {
-    return view('home');
-});
 
 // hari
 Route::get('/hari', [DayController::class, 'tampil'])->name('hari.tampil');
@@ -116,3 +114,15 @@ Route::get('/kurikulum', [PengajarController::class, 'tampil'])->name('kurikulum
 Route::post('/importexcel', [PengajarController::class, 'importexcel'])->name('importexcel');
 
 Route::post('/deletedata', [PengajarController::class, 'delete'])->name('deletedata');
+
+// Generate
+
+Route::get('/', [GenetikaController::class, 'tampil'])->name('jadwal.tampil');
+
+Route::post('/jadwal/generate', [GenetikaController::class, 'submit'])->name('jadwal.generate');
+
+Route::get('/jadwal/hapus', [KurikulumController::class, 'delete'])->name('jadwal.delete');
+
+Route::get('/jadwal/print', [KurikulumController::class, 'cetakJadwal'])->name('jadwal.cetak');
+
+

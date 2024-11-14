@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\Jam;
 use App\Models\Hari;
 use App\Models\Ruangan;
-use App\Models\Pengampu;
+use App\Models\Pengajar;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -14,6 +14,7 @@ class Jadwal extends Model
     use HasFactory;
 
     protected $table = 'jadwal';
+    protected $fillable = ['id_hari', 'id_pengajar', 'id_jam', 'ruang_kelas', 'value', 'value_proses', 'tipe'];
 
     const BEGINNILAI = 1;
     const JUMAT = 5;
@@ -22,8 +23,8 @@ class Jadwal extends Model
         return $this->belongsTo(Hari::class, 'id_hari');
     }
 
-    public function Pengampu(){
-        return $this->belongsTo(Pengampu::class, 'id_pengampu');
+    public function Pengajar(){
+        return $this->belongsTo(Pengajar::class, 'id_pengajar');
     }
 
     public function Jam(){

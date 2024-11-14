@@ -109,44 +109,53 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Semester I
+
         matakuliah::create([
             'kode_matkul' => '24SIFH16X001',
             'nama_matkul' => 'Etika Profesi',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         matakuliah::create([
+
             'kode_matkul' => '24SIFH16X002',
             'nama_matkul' => 'Kewarganegaraan',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
-            'tipe' => 'Wajib',
+
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Umum',
+
         ]);
         matakuliah::create([
             'kode_matkul' => '24SIFH16X003',
             'nama_matkul' => 'Bahasa Indonesia ',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
-            'tipe' => 'Wajib',
+
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Umum',
+
         ]);
         matakuliah::create([
             'kode_matkul' => '24SIFH16X004',
             'nama_matkul' => 'Ilmu Sosial Dasar',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
-            'tipe' => 'Wajib',
+
+            'jenis_semester' => 'Ganjil',
+
         ]);
         matakuliah::create([
             'kode_matkul' => '24SIFH16X005',
             'nama_matkul' => 'Matematika Diskrit I',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+
+            'jenis_semester' => 'Ganjil',
+
             'tipe' => 'Wajib',
         ]);
         matakuliah::create([
@@ -154,7 +163,8 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Matematika Informatika',
             'sks' => '3',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
 
@@ -163,7 +173,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Algoritma & Pemrograman ',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
 
@@ -172,7 +182,9 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Statistika Dasar',
             'sks' => '2',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+
+            'jenis_semester' => 'Ganjil',
+
             'tipe' => 'Wajib',
         ]);
 
@@ -181,25 +193,28 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Sistem Digital',
             'sks' => '3',
             'semester' => '1',
-            'jenis_semester'=> 'ganjil',
+
+            'jenis_semester' => 'Ganjil',
+
             'tipe' => 'Wajib',
         ]);
         // Semester II
         matakuliah::create([
             'kode_matkul' => '24SIFH16Y010',
             'nama_matkul' => 'Pancasila',
+
             'sks' => '2',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
-            'tipe' => 'Wajib',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Umum',
         ]);
         matakuliah::create([
             'kode_matkul' => '24SIFH16X011',
             'nama_matkul' => 'Pendidikan Agama',
             'sks' => '2',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
-            'tipe' => 'Wajib',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Umum',
         ]);
         
         matakuliah::create([
@@ -207,16 +222,19 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Matematika Diskrit II',
             'sks' => '3',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+            'jenis_semester' => 'Genap',
+
             'tipe' => 'Wajib',
         ]);
         
         matakuliah::create([
+
             'kode_matkul' => '24SIFH16X013',
             'nama_matkul' => 'Struktur Data',
             'sks' => '3',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+
+            'jenis_semester' => 'Genap',
             'tipe' => 'Wajib',
         ]);
         
@@ -225,7 +243,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Sistem Operasi',
             'sks' => '3',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+            'jenis_semester' => 'Genap',
             'tipe' => 'Wajib',
         ]);
         
@@ -234,7 +252,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Pengantar Probabilitas',
             'sks' => '3',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+            'jenis_semester' => 'Genap',
             'tipe' => 'Wajib',
         ]);
         
@@ -243,7 +261,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Organisasi dan Arsitektur Komputer',
             'sks' => '3',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+            'jenis_semester' => 'Genap',
             'tipe' => 'Wajib',
         ]);
         
@@ -252,8 +270,8 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Kewirausahaan',
             'sks' => '2',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
-            'tipe' => 'Wajib',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Umum',
         ]);
         
         matakuliah::create([
@@ -261,7 +279,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Tata Tulis Karya Ilmiah',
             'sks' => '2',
             'semester' => '2',
-            'jenis_semester'=> 'genap',
+            'jenis_semester' => 'Genap',
             'tipe' => 'Wajib',
         ]);
         
@@ -270,7 +288,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Interaksi Manusia dan Komputer',
             'sks' => '3',
             'semester' => '3',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         
@@ -279,7 +297,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Basis Data',
             'sks' => '3',
             'semester' => '3',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         
@@ -288,7 +306,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Desain dan Analisis Algoritma',
             'sks' => '3',
             'semester' => '3',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         
@@ -297,7 +315,7 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Rekayasa Perangkat Lunak',
             'sks' => '3',
             'semester' => '3',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         
@@ -306,7 +324,232 @@ class DatabaseSeeder extends Seeder
             'nama_matkul' => 'Pemrograman Berorientasi Objek',
             'sks' => '3',
             'semester' => '3',
-            'jenis_semester'=> 'ganjil',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X024',
+            'nama_matkul' => 'Komunikasi Data dan Jaringan Komputer',
+            'sks' => '3',
+            'semester' => '3',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X025',
+            'nama_matkul' => 'Teori Bahasa dan Otomata',
+            'sks' => '3',
+            'semester' => '3',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X026',
+            'nama_matkul' => 'Metode Penelitian',
+            'sks' => '2',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X027',
+            'nama_matkul' => 'Analisis dan Desain Sistem',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X028',
+            'nama_matkul' => 'Pengantar Kecerdasan Buatan',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X029',
+            'nama_matkul' => 'Sistem Informasi',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X030',
+            'nama_matkul' => 'Pengantar Pemrosesan Data Multimedia',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X031',
+            'nama_matkul' => 'Keamanan Jaringan',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X032',
+            'nama_matkul' => 'Pemrograman Berbasis Web',
+            'sks' => '3',
+            'semester' => '4',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X033',
+            'nama_matkul' => 'Komputer dan Masyarakat',
+            'sks' => '2',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X034',
+            'nama_matkul' => 'Pemodelan dan Simulasi',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X035',
+            'nama_matkul' => 'Grafika Komputer',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X036',
+            'nama_matkul' => 'Sains Data',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X037',
+            'nama_matkul' => 'Basis Data Lanjut',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X038',
+            'nama_matkul' => 'Desain dan Pengujian Berpusat pada Pengguna',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X039',
+            'nama_matkul' => 'Teknologi Logika Fuzzy',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X040',
+            'nama_matkul' => 'Teknologi IOT',
+            'sks' => '3',
+            'semester' => '5',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X041',
+            'nama_matkul' => 'Praktik Kerja Lapangan (PKL)',
+            'sks' => '2',
+            'semester' => '6',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X042',
+            'nama_matkul' => 'Siklus Hidup Proyek Kecerdasan Buatan',
+            'sks' => '3',
+            'semester' => '6',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X043',
+            'nama_matkul' => 'Pengantar Deep Learning',
+            'sks' => '3',
+            'semester' => '6',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X044',
+            'nama_matkul' => 'Mata Kuliah Pilihan Wajib Jalur',
+            'sks' => '3',
+            'semester' => '6',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X045',
+            'nama_matkul' => 'Mata Kuliah Pilihan Bebas',
+            'sks' => '3',
+            'semester' => '6',
+            'jenis_semester' => 'Genap',
+            'tipe' => 'Pilihan',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X046',
+            'nama_matkul' => 'Kuliah Kerja Nyata (KKN)',
+            'sks' => '2',
+            'semester' => '7',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X047',
+            'nama_matkul' => 'Mata Kuliah Pilihan Wajib Jalur',
+            'sks' => '3',
+            'semester' => '7',
+            'jenis_semester' => 'Ganjil',
+            'tipe' => 'Wajib',
+        ]);
+        
+        matakuliah::create([
+            'kode_matkul' => '24SIFH16X048',
+            'nama_matkul' => 'Tugas Akhir',
+            'sks' => '6',
+            'semester' => '7',
+            'jenis_semester' => 'Ganjil',
             'tipe' => 'Wajib',
         ]);
         
@@ -611,7 +854,6 @@ class DatabaseSeeder extends Seeder
         Hari::create([
             'nama' => 'Jumat',
         ]);
-
         kelas::create([
             'nama' => 'A',
             'jenis' => 'REGULER',

@@ -8,25 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 
 use App\Models\Dosen;
 use App\Models\matakuliah;
-use App\Models\kelas;
 
 class Pengajar extends Model
 {
     use HasFactory;
 
     protected $table = 'pengajar';
-    protected $fillable = ['kode_ajaran', 'id_dosen', 'kode_matkul', 'id_namakelas'];
+    protected $fillable = ['kode_ajaran', 'id_dosen', 'kode_matkul'];
 
     public function dosen(){
-        return $this->belongsTo(Dosen::class, 'id');
+        return $this->belongsTo(Dosen::class, 'id_dosen');
     }
 
     public function matkul(){
         return $this->belongsTo(matakuliah::class, 'kode_matkul');
-    }
-
-    public function namakelas(){
-        return $this->belongsTo(kelas::class, 'id_namakelas');
     }
 
 }
