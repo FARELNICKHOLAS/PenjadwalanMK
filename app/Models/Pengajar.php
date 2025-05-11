@@ -14,7 +14,7 @@ class Pengajar extends Model
     use HasFactory;
 
     protected $table = 'pengajar';
-    protected $fillable = ['kode_ajaran', 'id_dosen', 'kode_matkul'];
+    protected $fillable = ['kode_ajaran', 'id_dosen', 'kode_matkul', 'kelas'];
 
     public function dosen(){
         return $this->belongsTo(Dosen::class, 'id_dosen');
