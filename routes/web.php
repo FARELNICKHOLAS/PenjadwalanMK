@@ -12,6 +12,11 @@ use App\Http\Controllers\PengajarController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\TeachController;
 
+
+// kelola
+Route::get('/kelola', function () {
+    return view('kelola');
+});
 // hari
 Route::get('/hari', [DayController::class, 'tampil'])->name('hari.tampil');
 

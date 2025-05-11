@@ -29,6 +29,7 @@ class MKController extends Controller
         $matakuliah->nama_matkul = $request->nama;
         $matakuliah->sks = $request->sks;
         $matakuliah->tipe = $request->tipe;
+        $matakuliah->jenis_semester = $request->jenis;
         $matakuliah->semester = $request->semester;
         $matakuliah->save();
 
