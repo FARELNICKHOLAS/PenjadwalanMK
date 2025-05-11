@@ -24,7 +24,7 @@ class PengajarImport implements ToModel, WithHeadingRow
             'kode_ajaran' => $row['kode_ajaran'],
             'id_dosen' => $idDosen,
             'kode_matkul' => $idMatkul,
-            'kelas' => $row['kode'],
+            'kelas' => $row['kelas'],
         ]);
     }
 
