@@ -47,35 +47,53 @@
 <!--option ends-->
 
 <!-- table starts -->
-<div class="container mb-4 mt-5">
-    <div class="custom-table-container">
-        <div class="table-responsive">
-            @if(session('pengajarHilang'))
-                <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
-                    <img src="{{ asset('img/warning.svg') }}" alt="Icon Peringatan" width="32" height="32" class="bi me-2">
-                    <div>
-                        <strong>ID Pengajar yang Hilang:</strong> {{ implode(', ', session('pengajarHilang')) }}
-                        <p class="mb-0"><strong>Saran:</strong> <em>Generate Ulang Jadwal!</em></p>
+    <div class="container mb-4 mt-5">
+        <div class="custom-table-container">
+            <div class="table-responsive">
+                @if(session('pengajarHilang'))
+                    <div class="alert alert-warning d-flex align-items-center mt-3" role="alert">
+                        <img src="{{ asset('img\warning.svg') }}" alt="Icon Peringatan" width="32" height="32" class="bi me-2">
+                        <div>
+                            <strong> ID Pengajar yang Hilang:</strong> {{ implode(', ', session('pengajarHilang')) }}
+                            <p class="mb-0"><strong>Saran:</strong> <span><em> Generate Ulang Jadwal!</em></span></p>
+                        </div>
                     </div>
-                </div>
-            @endif
-            <table class="table table-bordered">
-                <thead class="table-primary">
-                    <tr>
-                        <th scope="col">No.</th>
-                        <th scope="col">Kode Matakuliah</th>
-                        <th scope="col">Matakuliah</th>
-                        <th scope="col">SKS</th>
-                        <th scope="col">Semester</th>
-                        <th scope="col">Dosen</th>
-                        <th scope="col">Hari</th>
-                        <th scope="col">Jam</th>
-                        <th scope="col">Ruangan</th>
-                    </tr>
-                </thead>
-            </table>
+                @endif
+                <table class="table table-bordered">
+                    <thead class="table-primary">
+                        <tr>
+                            <th scope="col">No.</th>
+                            <th scope="col">Kode Matakuliah</th>
+                            <th scope="col">Matakuliah</th>
+                            <th scope="col">SKS</th>
+                            <th scope="col">Semester</th>
+                            <th scope="col">Dosen</th>
+                            <th scope="col">Hari</th>
+                            <th scope="col">Jam</th>
+                            <th scope="col">Ruangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($jadwal != null)
+                        @php $i = 1; @endphp       
+                        @foreach ( $jadwal as $no=>$data )
+                        <tr>
+                            <td>{{ $i++ }}</td>
+                            <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
+                            <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
+                            <td>{{ $data->pengajar->matkul->sks }}</td>
+                            <td>{{ $data->pengajar->kelas }}</td>
+                            <td>{{ $data->pengajar->dosen->nama }}</td>
+                            <td>{{ $data->hari->nama }}</td>
+                            <td>{{ $data->jam->sesi }}</td>
+                            <td>{{ $data->ruangan->nama_ruangan }}</td>
+                        </tr>
+                        @endforeach
+                        @endif
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
-</div>
-<!-- table ends -->
+     <!-- table ends -->
 @endsection
