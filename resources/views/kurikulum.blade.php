@@ -4,10 +4,6 @@
     <div >
     <h1 class="title-custom mt-3">Kurikulum <a>Dosen Pengampu Matakuliah</a></h1>
     </div>
-    <div class="d-flex gap-2 justify-content-end mt-3" style="margin-right:75px">
-    <a class="btn btn-danger btn-lg" style="width:200px" href="/" role="button">Kembali</a>
-      </div>
-    <div >
     <h1 class="title-custom mt-5 fs-5">import file (.csv):</a></h1>
     <hr class= "my-3">
     </div>
