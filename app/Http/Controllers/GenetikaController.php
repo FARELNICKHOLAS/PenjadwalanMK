@@ -15,17 +15,16 @@ class GenetikaController extends Controller
     public function tampil(){
         $jam = $this->getJam();
         $hari = $this->getHari();
-
         $ruangan = Ruangan::get();
-        $pengajar = Pengajar::get();
-
+        $pengajar = Pengajar::with('matkul')->first();
         $jadwal = Jadwal::with('hari', 'pengajar', 'jam', 'ruangan')
-                            ->orderBy('id_hari', 'asc')
-                            ->orderBy('id_jam', 'asc')
-                            ->orderBy('ruang_kelas', 'asc')
-                            ->get();
+        ->orderBy('id_hari', 'asc')
+        ->orderBy('id_jam', 'asc')
+        ->orderBy('ruang_kelas', 'asc')
+        ->get();
+        $semester = intval($pengajar->matkul->semester);
 
-        return view('home', compact('jadwal', 'hari', 'ruangan', 'pengajar', 'jam'));
+        return view('home', compact('jadwal', 'hari', 'ruangan', 'pengajar', 'jam', 'semester'));
     }
 
     public function submit(Request $request){

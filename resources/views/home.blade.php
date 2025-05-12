@@ -59,7 +59,18 @@
                         </div>
                     </div>
                 @endif
+
+                @php
+                    $listSemester = [];
+                    if ($semester % 2 != 0) {
+                        $listSemester = [1, 3, 5, 7];
+                    }else {
+                        $listSemester = [2, 4, 6];
+                    }
+                @endphp
                 <div id="jadwalToPrint">
+                    @foreach ( $listSemester as $smt)
+                    <h3>Semester {{ $smt }}</h3>
                     <table class="table table-bordered">
                         <thead class="table-primary">
                             <tr>
@@ -78,21 +89,24 @@
                             @if ($jadwal != null)
                             @php $i = 1; @endphp       
                             @foreach ( $jadwal as $no=>$data )
-                            <tr>
-                                <td>{{ $i++ }}</td>
-                                <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
-                                <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
-                                <td>{{ $data->pengajar->matkul->sks }}</td>
-                                <td>{{ $data->pengajar->kelas }}</td>
-                                <td>{{ $data->pengajar->dosen->nama }}</td>
-                                <td>{{ $data->hari->nama }}</td>
-                                <td>{{ $data->jam->sesi }}</td>
-                                <td>{{ $data->ruangan->nama_ruangan }}</td>
-                            </tr>
+                                @if ($data->pengajar->matkul->semester == $smt)
+                                <tr>
+                                    <td>{{ $i++ }}</td>
+                                    <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
+                                    <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
+                                    <td>{{ $data->pengajar->matkul->sks }}</td>
+                                    <td>{{ $data->pengajar->kelas }}</td>
+                                    <td>{{ $data->pengajar->dosen->nama }}</td>
+                                    <td>{{ $data->hari->nama }}</td>
+                                    <td>{{ $data->jam->sesi }}</td>
+                                    <td>{{ $data->ruangan->nama_ruangan }}</td>
+                                </tr>
+                                @endif
                             @endforeach
                             @endif
                         </tbody>
                     </table>
+                    @endforeach
                 </div>
             </div>
         </div>
