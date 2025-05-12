@@ -36,8 +36,8 @@
                 <form action="{{ route('jadwal.delete') }}">
                     <button class="btn btn-danger" style="width: 120px;">Delete</button>
                 </form>
-                <form action="{{ route('jadwal.cetak') }}" method="GET">
-                    <button class="btn btn-success" style="width: 120px;">Print</button>
+                <form>
+                    <button onclick="printJadwal('jadwalToPrint')" class="btn btn-success" id="printBtn" style="width: 120px;">Print</button>
                 </form>
             </div>
         </div>
@@ -59,41 +59,53 @@
                         </div>
                     </div>
                 @endif
-                <table class="table table-bordered">
-                    <thead class="table-primary">
-                        <tr>
-                            <th scope="col">No.</th>
-                            <th scope="col">Kode Matakuliah</th>
-                            <th scope="col">Matakuliah</th>
-                            <th scope="col">SKS</th>
-                            <th scope="col">Semester</th>
-                            <th scope="col">Dosen</th>
-                            <th scope="col">Hari</th>
-                            <th scope="col">Jam</th>
-                            <th scope="col">Ruangan</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($jadwal != null)
-                        @php $i = 1; @endphp       
-                        @foreach ( $jadwal as $no=>$data )
-                        <tr>
-                            <td>{{ $i++ }}</td>
-                            <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
-                            <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
-                            <td>{{ $data->pengajar->matkul->sks }}</td>
-                            <td>{{ $data->pengajar->kelas }}</td>
-                            <td>{{ $data->pengajar->dosen->nama }}</td>
-                            <td>{{ $data->hari->nama }}</td>
-                            <td>{{ $data->jam->sesi }}</td>
-                            <td>{{ $data->ruangan->nama_ruangan }}</td>
-                        </tr>
-                        @endforeach
-                        @endif
-                    </tbody>
-                </table>
+                <div id="jadwalToPrint">
+                    <table class="table table-bordered">
+                        <thead class="table-primary">
+                            <tr>
+                                <th scope="col">No.</th>
+                                <th scope="col">Kode Matakuliah</th>
+                                <th scope="col">Matakuliah</th>
+                                <th scope="col">SKS</th>
+                                <th scope="col">Semester</th>
+                                <th scope="col">Dosen</th>
+                                <th scope="col">Hari</th>
+                                <th scope="col">Jam</th>
+                                <th scope="col">Ruangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if ($jadwal != null)
+                            @php $i = 1; @endphp       
+                            @foreach ( $jadwal as $no=>$data )
+                            <tr>
+                                <td>{{ $i++ }}</td>
+                                <td>{{ $data->pengajar->matkul->kode_matkul }}</td>
+                                <td>{{ $data->pengajar->matkul->nama_matkul }}</td>
+                                <td>{{ $data->pengajar->matkul->sks }}</td>
+                                <td>{{ $data->pengajar->kelas }}</td>
+                                <td>{{ $data->pengajar->dosen->nama }}</td>
+                                <td>{{ $data->hari->nama }}</td>
+                                <td>{{ $data->jam->sesi }}</td>
+                                <td>{{ $data->ruangan->nama_ruangan }}</td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
      <!-- table ends -->
+    <script>
+        function printJadwal(jadwalToPrint) {
+            var printContents = document.getElementById(jadwalToPrint).innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+            window.print();
+            document.body.innerHTML = originalContents;
+        }
+    </script>
 @endsection

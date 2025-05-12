@@ -128,6 +128,4 @@ Route::post('/jadwal/generate', [GenetikaController::class, 'submit'])->name('ja
 
 Route::get('/jadwal/hapus', [KurikulumController::class, 'delete'])->name('jadwal.delete');
 
-Route::get('/jadwal/print', [KurikulumController::class, 'cetakJadwal'])->name('jadwal.cetak');
-
 
